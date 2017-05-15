@@ -22,7 +22,10 @@ class Activity(models.Model):
     name = models.CharField(max_length=30)
     host = models.ForeignKey(Org, on_delete=models.CASCADE)
     date = models.DateField()
-    participate = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
+    # participate = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Notify(models.Model):
