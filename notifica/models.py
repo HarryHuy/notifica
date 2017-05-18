@@ -5,6 +5,7 @@ from django.conf import settings
 
 class CustomUser(AbstractUser):
     code = models.PositiveIntegerField(null=True)
+    # position = models.ForeignKey(Position)
 
 
 class Position(models.Model):
