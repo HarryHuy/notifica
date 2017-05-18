@@ -1,1 +1,6 @@
-.idea
+.idea/
+fonts/
+__pycache__/
+*.swp
+jquery/
+bootstrap*/
