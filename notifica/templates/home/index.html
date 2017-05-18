@@ -1,8 +1,0 @@
-{% extends 'base.html' %}
-{% block content %}
-	<h2>Home Page</h2>
-	{% if user.is_authenticated %}
-	<p>User current login: <b>{{ user }}</b></p>
-	<a href="{% url 'logout' %}">Logout</a>
-	{% endif %}
-{% endblock %}
