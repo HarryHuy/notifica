@@ -1,6 +1,6 @@
 .idea/
-fonts/
-__pycache__/
+__pycache__
 *.swp
 jquery/
 bootstrap*/
+*.sqlite3
