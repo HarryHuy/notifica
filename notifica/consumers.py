@@ -14,33 +14,34 @@ def http_consumer(message):
 
 @channel_session_user_from_http
 def ws_add(message):
-    if message.user.is_authenticated is False:
-        message.reply_channel.send({'accept': True})
-    else:
-        message.reply_channel.send({'accept': True})
-        Group('notify').add(message.reply_channel)
-        # print(dict(message.user))
+    # if message.user.is_authenticated is False:
+    #     message.reply_channel.send({'accept': False})
+    # else:
+    #     message.reply_channel.send({'accept': True})
+    #     Group('notify').add(message.reply_channel)
+    message.reply_channel.send({'accept': True})
+    Group('notify').add(message.reply_channel)
 
 
 @channel_session_user
 def ws_disconnect(message):
-    Group('chat').discard(message.reply_channel)
+    Group('notify').discard(message.reply_channel)
 
 
 @channel_session_user
 def ws_message(message):
     # print(message.user, message.reply_channel)
-    Group('chat').send({
-        # 'text': '[%s] %s' % (message.user, message['text'])
-        'text': 'from users'
+    Group('notify').send({
+        'text': '[%s] %s' % (message.user, message['text'])
     })
-
-
-# @channel_session_user
-# def ws_message(message):
+##   sending message to specified user
 #     inst = [obj for obj in gc.get_referrers(Message) if isinstance(obj, Message)]
 #     for i in inst:
 #         if i.channel.name == 'websocket.connect':
 #             if i.user.username == 'harry':
 #                 i.reply_channel.send({'text': message.content['text']})
+
+def ws_manual(message):
+    Group('notify').send(message.content)
+    print(message.__dict__)
 
