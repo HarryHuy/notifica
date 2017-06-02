@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from notifica.views import home, send_status
+import notifica.views  as views
 
 urlpatterns = [
-    url(r'^$', home),
+    url(r'^$', views.home),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls')),
-    url(r'^status/', send_status)
+    url(r'^status/', views.send_status),
+    url(r'^users_online/', views.users_online)
 ]
