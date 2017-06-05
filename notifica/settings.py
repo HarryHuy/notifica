@@ -138,4 +138,4 @@ CHANNEL_LAYERS = {
 
 LOGIN_REDIRECT_URL = '/'
 
-AUTH_USER_MODEL = 'notifica.CustomUser'
+AUTH_USER_MODEL = 'notifica.ExtendedUser'
