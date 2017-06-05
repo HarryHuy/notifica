@@ -1,18 +1,20 @@
 from django.db.models.signals import post_save
-from .models import *
+from .models import Notify
 from django.dispatch import receiver
 from django.contrib.auth import user_logged_in, user_logged_out
-from .base import BaseManager
 
 
-@receiver(post_save, sender=Org)
-def activity_changed(sender, **kargs):
-    print('Model has been changed!')
+@receiver(post_save, sender=Notify)
+def new_notify(sender, **kargs):
+    if kargs['created'] == True:
+        message = {
+            'creator': kargs['instance'].creator.username,
+            'recipient': kargs['instance'].recipient.username,
+            'state': kargs['instance'].state,
+            'type': kargs['instance'].type,
+            'url': kargs['instance'].url
+        }
+        Channel('notify').send({'text': message})
 
-@receiver(user_logged_in)
-def on_user_login(**kwargs):
-    print('some one has logged in')
-    user = kwargs.get('user')
-    users = BaseManager('users_logged_in', 'users')
-    users.add(user)
-    print(users.count())
+
+
