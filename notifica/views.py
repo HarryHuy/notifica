@@ -3,6 +3,8 @@ from channels import Channel
 from django.http import HttpResponse
 import json
 from .models import Position, ExtendedUser, Notify
+from django.core.cache import caches
+from .base import BaseManager
 
 def home(request):
     return render(request, 'home/home.html')
@@ -44,4 +46,20 @@ def list_user(request):
 def user_detail(request, id):
     user = ExtendedUser.objects.get(id=id)
     dump = json.dumps([user.username, user.email, user.position.name])
+    return HttpResponse(dump, content_type='application/json')
+
+def view_cache(request):
+    cache = caches['default']
+    all = cache.get('logged_in.users.all')
+    if all != None:
+        dump = json.dumps([item.username for item in all])
+    # dump = json.dumps(all)
+    else:
+        dump = '["nothing"]'
+    return HttpResponse(dump, content_type='application/json')
+
+def online_users(request):
+    logged_users = BaseManager('logged_in', 'users')
+    users_online = logged_users.all()
+    dump = json.dumps(users_online)
     return HttpResponse(dump, content_type='application/json')

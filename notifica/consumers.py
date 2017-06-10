@@ -6,7 +6,7 @@ from channels.message import Message
 import gc
 from .base import BaseManager
 
-logged_users = BaseManager('logged_users', 'users')
+logged_users = BaseManager('logged_in', 'users')
 
 def http_consumer(message):
     response = HttpResponse("Hello world! You asked for %s" % message.content['path'])
@@ -16,13 +16,12 @@ def http_consumer(message):
 
 @channel_session_user_from_http
 def ws_add(message):
-    if message.user.is_authenticated is False:
+    if not message.user.is_authenticated:
         message.reply_channel.send({'accept': False})
     else:
         message.reply_channel.send({'accept': True, 'text': 'ws connection successful'})
         Group('notify-%s' % message.user.id).add(message.reply_channel)
         logged_users.add(message.user)
-
 
 @channel_session_user
 def ws_disconnect(message):
@@ -42,5 +41,6 @@ def ws_manual(message):
     Group('notify').send({'text': 'radiocheck'})
 
 def ws_send_notify(message):
-    if logged_users.get(message.text.user):
-        Group('notyfi-%s' % message.text.user.id).send({'text': message.text.message_content})
+    if logged_users.get(message.text['recipient_id']):
+        Group('notyfi-%s' % message.text['recipient_id'])\
+            .send({'text': message.text})
