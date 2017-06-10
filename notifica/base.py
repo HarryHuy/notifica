@@ -92,15 +92,15 @@ class BaseManager(object):
 
         self.db.set(self.get_all_cache_key(), all, None)
 
-    def delete(self, id):
+    def delete(self, item):
         """delete user from cache
         """
 
         # delete single object
-        self.db.delete(self.get_item_cache_key(id))
+        self.db.delete(self.get_item_cache_key(item.id))
 
         # update all
-        items = [item for item in self.all() if item.id != id]
+        items = [item_all for item_all in self.all() if item_all.id != item.id]
 
         self.db.set(self.get_all_cache_key(), items, None)
 
