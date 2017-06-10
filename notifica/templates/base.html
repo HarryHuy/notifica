@@ -14,17 +14,17 @@
             </div>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="active" role="presentation"><a href="#">Trang chủ</a></li>
-                    <li role="presentation"><a href="#">Tổ chức</a></li>
-                    <li role="presentation"><a href="#">Hoạt động</a></li>
-                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" href="#">Thông báo <span class="caret"></span></a>
+                    <li class="active" role="presentation"><a href="#">Home</a></li>
+                    <li role="presentation"><a href="#">Organizations</a></li>
+                    <li role="presentation"><a href="#">Activities</a></li>
+                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" href="#"><span class="badge badge-pill badge-success">1</span> Notification <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li role="presentation"><a href="#">First Item<button class="close"><span aria-hidden="true">×</span></button></a></li>
                             <li role="presentation"><a href="#">Second Item<button class="close"><span aria-hidden="true">×</span></button></a></li>
                             <li role="presentation"><a href="#">Third Item<button class="close"><span aria-hidden="true">×</span></button></a></li>
                         </ul>
                     </li>
-                    <li role="presentation"><a href="#">Đăng nhập</a></li>
+                    <li role="presentation"><a href="#">Login</a></li>
                 </ul>
             </div>
         </div>
@@ -33,6 +33,9 @@
     {% endblock %}
     <script src="{% static 'jquery/jquery-1.9.1.js' %}"></script>
     <script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript">
+        // var msg_count = {{ msg.count }}
+    </script>
     <script src="{% static 'notifica/ws.js' %}"></script>
     <script src="{% static 'notifica/notify_client.js' %}"></script>
 </body>
