@@ -4,7 +4,7 @@ from .cache import cache
 LOG = logging.getLogger(__name__)
 
 
-class BaseManager(object):
+class ManageUtils(object):
 
     """Simple manager util for storing data related to the group
 
@@ -18,6 +18,7 @@ class BaseManager(object):
     CACHE_KEY = '{0}.{1}'
     CACHE_COUNT_KEY = '{0}.count'
     CACHE_ALL_KEY = '{0}.all'
+    share = 0
 
     @property
     def db(self):
@@ -132,7 +133,10 @@ class BaseManager(object):
         """A singleton implementation of Manager. There can be only one.
         """
         if cls._instance is None:
-            cls._instance = super(BaseManager, cls).__new__(cls, *args, **kwargs)
+            cls._instance = super(ManageUtils, cls).__new__(cls, *args, **kwargs)
         cls._instance.name = name
         cls._instance.scope = scope
         return cls._instance
+
+logged_users = ManageUtils('logged_in', 'users')
+

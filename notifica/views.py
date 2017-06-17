@@ -4,7 +4,7 @@ from django.http import HttpResponse
 import json
 from .models import Position, ExtendedUser, Notify
 from django.core.cache import caches
-from .base import BaseManager
+from .consumers import logged_users
 
 def home(request):
     return render(request, 'home/home.html')
@@ -59,7 +59,5 @@ def view_cache(request):
     return HttpResponse(dump, content_type='application/json')
 
 def online_users(request):
-    logged_users = BaseManager('logged_in', 'users')
-    users_online = logged_users.all()
-    dump = json.dumps(users_online)
+    dump = json.dumps([i.username for i in logged_users.all()])
     return HttpResponse(dump, content_type='application/json')
