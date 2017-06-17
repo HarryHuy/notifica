@@ -1,46 +1,22 @@
-from django.http import HttpResponse
-from channels.handler import AsgiHandler
-from channels import Group, Channel
-from channels.auth import channel_session_user, channel_session_user_from_http
-from channels.message import Message
-import gc
-from .base import BaseManager
+from channels.generic.websockets import WebsocketDemultiplexer
+from .models import NotifyBinding, MessageBinding
+from .ultils import logged_users
+from channels import Group
 
-logged_users = BaseManager('logged_in', 'users')
+class Demultiplexer(WebsocketDemultiplexer):
+    http_user = True
+    http_user_and_session = True
 
-def http_consumer(message):
-    response = HttpResponse("Hello world! You asked for %s" % message.content['path'])
-    for chunk in AsgiHandler.encode_response(response):
-        message.reply_channel.send(chunk)
+    consumers = {
+        'notify': NotifyBinding.consumer,
+        'message': MessageBinding.consumer
+    }
 
+    groups = ['demultiplex']
 
-@channel_session_user_from_http
-def ws_add(message):
-    if not message.user.is_authenticated:
-        message.reply_channel.send({'accept': False})
-    else:
-        message.reply_channel.send({'accept': True, 'text': 'ws connection successful'})
-        Group('notify-%s' % message.user.id).add(message.reply_channel)
-        logged_users.add(message.user)
-
-@channel_session_user
-def ws_disconnect(message):
-    message.reply_channel.send({'text': 'ws disconnected'})
-    Group('notify-%s' % message.user.id).discard(message.reply_channel)
-    logged_users.delete(message.user)
-
-
-@channel_session_user
-def ws_message(message):
-    # Group('notify').send({
-    #     'text': '[%s] %s' % (message.user, message['text'])
-    # })
-    message.reply_channel.send({'text': 'message recieved'})
-
-def ws_manual(message):
-    Group('notify').send({'text': 'radiocheck'})
-
-def ws_send_notify(message):
-    if logged_users.get(message.text['recipient_id']):
-        Group('notyfi-%s' % message.text['recipient_id'])\
-            .send({'text': message.text})
+    # group name with user's id wrapped
+    def raw_connect(self, message, **kwargs):
+        for group in self.connection_groups(**kwargs):
+            Group(group + str('-%s' % message.user.id),
+                  channel_layer=message.channel_layer).add(message.reply_channel)
+        self.connect(message, **kwargs)
