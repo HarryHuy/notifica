@@ -126,7 +126,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    '/media/harry/data/python/notifica/notifica/static'
+    './notifica/static'
 ]
 
 CHANNEL_LAYERS = {
