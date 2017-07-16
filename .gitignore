@@ -4,3 +4,5 @@ __pycache__
 jquery/
 bootstrap*/
 *.sqlite3
+env
+*.pyc
