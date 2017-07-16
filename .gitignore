@@ -6,3 +6,4 @@ bootstrap*/
 *.sqlite3
 env
 *.pyc
+.env
