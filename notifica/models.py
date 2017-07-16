@@ -14,8 +14,8 @@ class Position(models.Model):
 
 
 class ExtendedUser(AbstractUser):
-    code = models.PositiveIntegerField(null=True)
-    position = models.ForeignKey(Position, null=True)
+    code = models.PositiveIntegerField(null=True, blank=True)
+    position = models.ForeignKey(Position, null=True, blank=True)
 
     def __str__(self):
         return self.username
@@ -23,12 +23,16 @@ class ExtendedUser(AbstractUser):
 
 
 class Org(models.Model):
-    name = models.CharField(max_length=30)
-    description = models.CharField(max_length=50)
-    member = models.ManyToManyField(ExtendedUser)
+    name = models.CharField(max_length=30, blank=True)
+    description = models.CharField(max_length=50, blank=True)
+    member = models.ManyToManyField(ExtendedUser, blank=True, related_name='orgs')
 
     def __str__(self):
         return self.name
+
+class Membership(models.Model):
+    user = models.ForeignKey(ExtendedUser, on_delete=models.CASCADE)
+    org = models.ForeignKey(Org, on_delete=models.CASCADE)
 
 
 class Activity(models.Model):
