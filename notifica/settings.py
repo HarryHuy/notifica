@@ -26,7 +26,9 @@ SECRET_KEY = '0k#6wkhm*ui!nr^42z$oo+esbso_273a&&r+z*4c_pku2ha!$_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'damp-springs-69076.herokuapp.com',
+]
 
 
 # Application definition
