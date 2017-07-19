@@ -1,8 +1,7 @@
 .idea/
 __pycache__
 *.swp
-jquery/
-bootstrap*/
 *.sqlite3
 env
 *.pyc
+.env
