@@ -4,9 +4,10 @@ from channels import Group, Channel
 from channels.auth import channel_session_user, channel_session_user_from_http
 from channels.message import Message
 import gc
-from .base import BaseManager
+from .classes import BaseManager
 
 logged_users = BaseManager('logged_in', 'users')
+
 
 def http_consumer(message):
     response = HttpResponse("Hello world! You asked for %s" % message.content['path'])
@@ -23,6 +24,7 @@ def ws_add(message):
         Group('notify-%s' % message.user.id).add(message.reply_channel)
         logged_users.add(message.user)
 
+
 @channel_session_user
 def ws_disconnect(message):
     message.reply_channel.send({'text': 'ws disconnected'})
@@ -37,8 +39,10 @@ def ws_message(message):
     # })
     message.reply_channel.send({'text': 'message recieved'})
 
+
 def ws_manual(message):
     Group('notify').send({'text': 'radiocheck'})
+
 
 def ws_send_notify(message):
     if logged_users.get(message.text['recipient_id']):

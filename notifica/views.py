@@ -4,14 +4,17 @@ from django.http import HttpResponse
 import json
 from .models import Position, ExtendedUser, Notify
 from django.core.cache import caches
-from .base import BaseManager
+from .classes import BaseManager
+
 
 def home(request):
     return render(request, 'home/home.html')
 
+
 def radio_check(request):
     Channel("notify").send({'text': 'radio-check'})
     return HttpResponse(status=200)
+
 
 def change_member_position(request):
     if request.method != 'POST':
@@ -38,15 +41,18 @@ def change_member_position(request):
         raise
     return HttpResponse(status=200)
 
+
 def list_user(request):
     users = ExtendedUser.objects.all()
     dump = json.dumps([obj for obj in users.values('id', 'username', 'position__name')])
     return HttpResponse(dump, content_type='application/json')
 
+
 def user_detail(request, id):
     user = ExtendedUser.objects.get(id=id)
     dump = json.dumps([user.username, user.email, user.position.name])
     return HttpResponse(dump, content_type='application/json')
+
 
 def view_cache(request):
     cache = caches['default']
@@ -57,6 +63,7 @@ def view_cache(request):
     else:
         dump = '["nothing"]'
     return HttpResponse(dump, content_type='application/json')
+
 
 def online_users(request):
     logged_users = BaseManager('logged_in', 'users')
