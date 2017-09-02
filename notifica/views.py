@@ -10,6 +10,7 @@ from .forms import UpdateUserForm
 def home(request):
     return render(request, 'home/home.html')
 
+
 def change_member_position(request):
     if request.method != 'POST':
         return render(request, 'member_position/update.html')
@@ -35,15 +36,18 @@ def change_member_position(request):
         raise
     return HttpResponse(status=200)
 
+
 def list_users(request):
     users = ExtendedUser.objects.all()
     dump = json.dumps([obj for obj in users.values('id', 'username', 'position__name')])
     return HttpResponse(dump, content_type='application/json')
 
+
 def user_detail(request, id):
     user = ExtendedUser.objects.get(id=id)
     dump = json.dumps([user.username, user.email, user.position.name])
     return HttpResponse(dump, content_type='application/json')
+
 
 def view_cache(request):
     cache = caches['default']
@@ -52,9 +56,11 @@ def view_cache(request):
     # dump = '["nothing"]'
     return HttpResponse(dump, content_type='application/json')
 
+
 def online_users(request):
     dump = json.dumps([i.username for i in logged_users.all()])
     return HttpResponse(dump, content_type='application/json')
+
 
 def update_user(request):
     if request.method == 'POST':
@@ -72,6 +78,7 @@ def update_user(request):
     else:
         form = UpdateUserForm()
     return render(request, 'update/update_user.html', {'form': form})
+
 
 def failed(request):
     print('failed called')
