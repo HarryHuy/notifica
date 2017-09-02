@@ -3,6 +3,7 @@ from .models import NotifyBinding, MessageBinding, ExtendedUser
 from .ultils import logged_users
 from channels import Group
 
+
 class Demultiplexer(WebsocketDemultiplexer):
     http_user = True
     http_user_and_session = True

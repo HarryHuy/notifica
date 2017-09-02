@@ -21,7 +21,6 @@ class ExtendedUser(AbstractUser):
         return self.username
 
 
-
 class Org(models.Model):
     name = models.CharField(max_length=30, blank=True)
     description = models.CharField(max_length=50, blank=True)
@@ -29,6 +28,7 @@ class Org(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Membership(models.Model):
     user = models.ForeignKey(ExtendedUser, on_delete=models.CASCADE)
@@ -55,6 +55,7 @@ class Notify(models.Model):
     def __str__(self):
         return self.content
 
+
 class Message(models.Model):
     recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='message_recipient')
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='message_sender')
@@ -63,6 +64,7 @@ class Message(models.Model):
 
     def __str__(self):
         return self.content
+
 
 class NotifyBinding(WebsocketBinding):
     model = Notify
@@ -79,6 +81,7 @@ class NotifyBinding(WebsocketBinding):
 
     def has_permission(self, user, action, pk):
         return True
+
 
 class MessageBinding(WebsocketBinding):
     model = Message
