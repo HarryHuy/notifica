@@ -73,6 +73,8 @@ def update_user(request):
         form = UpdateUserForm()
     return render(request, 'update/update_user.html', {'form': form})
 
-
-
-
+def failed(request):
+    print('failed called')
+    # import pdb
+    # pdb.set_trace()
+    return HttpResponse('Test called')

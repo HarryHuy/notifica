@@ -21,13 +21,17 @@ def user_changed(*args, **kwargs):
             notify.url = 'none'
             notify.save()
 
+
 # @receiver(post_save, sender=Org)
 def org_changed(**kwargs):
     print(kwargs)
+
 
 @receiver(m2m_changed, sender=Org.member.through)
 def org_m2m_changed(**kwargs):
     print(kwargs)
 
+
+# @receiver(m2m_changed, sender=)
 def user_m2m_changed(**kwargs):
     print(kwargs)
