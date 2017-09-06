@@ -62,3 +62,9 @@ def online_users(request):
     users_online = logged_users.all()
     dump = json.dumps(users_online)
     return HttpResponse(dump, content_type='application/json')
+
+
+def test_template(request):
+    users = ExtendedUser.objects.all()
+    return render(request, 'test/index.html', {'data': users})
+

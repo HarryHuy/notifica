@@ -21,11 +21,8 @@ urlpatterns = [
     url(r'^$', views.home),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls')),
-    url(r'^radio-check/', views.radio_check),
-    # url(r'^get_users_online/', views.get_users_online),
     url(r'^change-member-position/', views.change_member_position, name='change_member_position'),
     url(r'^list-users/', views.list_user, name='list_user'),
     url(r'^user/(?P<id>[0-9]+)/$', views.user_detail, name='user_detail'),
-    url(r'^view-cache/', views.view_cache, name='view_cache'),
-    url(r'^online/', views.online_users, name='online')
+    url(r'^test/$', views.test_template, name='test_template'),
 ]
