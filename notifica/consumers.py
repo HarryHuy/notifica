@@ -30,10 +30,7 @@ def ws_disconnect(message):
 @channel_session_user
 def ws_message(message):
     message.reply_channel.send({'text': 'message recieved'})
-
-
-def ws_manual(message):
-    Group('notify').send({'text': 'radiocheck'})
+    print('Receive message: %s from %s' % (message.content, message.user.username))
 
 
 def ws_send_notify(message):
