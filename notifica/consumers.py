@@ -9,12 +9,6 @@ from .classes import BaseManager
 logged_users = BaseManager('logged_in', 'users')
 
 
-def http_consumer(message):
-    response = HttpResponse("Hello world! You asked for %s" % message.content['path'])
-    for chunk in AsgiHandler.encode_response(response):
-        message.reply_channel.send(chunk)
-
-
 @channel_session_user_from_http
 def ws_add(message):
     if not message.user.is_authenticated:
@@ -34,9 +28,6 @@ def ws_disconnect(message):
 
 @channel_session_user
 def ws_message(message):
-    # Group('notify').send({
-    #     'text': '[%s] %s' % (message.user, message['text'])
-    # })
     message.reply_channel.send({'text': 'message recieved'})
 
 
