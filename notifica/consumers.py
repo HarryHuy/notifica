@@ -6,6 +6,7 @@ from channels.message import Message
 import gc
 from .classes import BaseManager
 
+
 logged_users = BaseManager('logged_in', 'users')
 
 
