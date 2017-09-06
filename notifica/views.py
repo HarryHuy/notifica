@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from channels import Channel
 from django.http import HttpResponse
 import json
 from .models import Position, ExtendedUser, Notify
@@ -11,11 +10,6 @@ def home(request):
     return render(request, 'home/home.html')
 
 
-def radio_check(request):
-    Channel("notify").send({'text': 'radio-check'})
-    return HttpResponse(status=200)
-
-
 def change_member_position(request):
     if request.method != 'POST':
         return render(request, 'member_position/update.html')
@@ -25,7 +19,7 @@ def change_member_position(request):
     try:
         member.save()
     except:
-        return HttpResponse(status=404)
+        raise
     n = Notify()
     creator = ExtendedUser.objects.get(id=request.user.id)
     recipient = ExtendedUser.objects.get(id=request.POST['member_id'])
@@ -37,7 +31,6 @@ def change_member_position(request):
     try:
         n.save()
     except:
-        # print('Notify generation error')
         raise
     return HttpResponse(status=200)
 
@@ -56,10 +49,9 @@ def user_detail(request, id):
 
 def view_cache(request):
     cache = caches['default']
-    all = cache.get('logged_in.users.all')
-    if all != None:
+    users = cache.get('logged_in.users.all')
+    if users != None:
         dump = json.dumps([item.username for item in all])
-    # dump = json.dumps(all)
     else:
         dump = '["nothing"]'
     return HttpResponse(dump, content_type='application/json')
