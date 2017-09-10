@@ -26,5 +26,5 @@ urlpatterns = [
     url(r'^user/(?P<id>[0-9]+)/$', user_detail, name='user_detail'),
     url(r'^view-cache/', view_cache, name='view_cache'),
     url(r'^online/', online_users, name='online'),
-    url(r'update-user-org/$', update_user_org, name='update_user_org'),
+    url(r'update-user-org/(?P<uid>[0-9]+)/$', update_user_org, name='update_user_org'),
 ]

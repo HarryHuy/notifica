@@ -19,12 +19,14 @@ class UserForm(forms.Form):
 
         self.fields['first_name'] = forms.CharField(
             max_length=30,
+            required=False,
             initial=self.user.first_name,
             widget=forms.TextInput(attrs={
                 'placeholder': 'First Name',
             }))
         self.fields['last_name'] = forms.CharField(
             max_length=30,
+            required=False,
             initial=self.user.last_name,
             widget=forms.TextInput(attrs={
                 'placeholder': 'Last Name',
@@ -33,8 +35,8 @@ class UserForm(forms.Form):
 
 class OrgForm(forms.Form):
     name = forms.CharField(
-        required=False, widget=forms.TextInput(
-            attrs={'placeholder': 'Organization Name'}),
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Organization Name'}),
     )
 
 

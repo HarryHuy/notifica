@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.cache import caches
 from django.contrib.auth.decorators import login_required
@@ -86,9 +86,8 @@ def update_user(request):
     return render(request, 'update/update_user.html', {'form': form})
 
 
-@login_required
-def update_user_org(request):
-    user = request.user
+def update_user_org(request, uid):
+    user = get_object_or_404(UserModel, pk=uid)
     OrgFormSet = formset_factory(OrgForm, formset=BaseOrgFormSet)
     org_list = [{'name': org.name} for org in user.org.all()]
     message = None
@@ -116,7 +115,7 @@ def update_user_org(request):
                     user.org.add(*new_org_list)
             except IntegrityError:
                 message = 'Error during transaction!'
-                return redirect(reverse('update_user_org'))
+                return redirect(reverse('update_user_org', uid))
 
             message = 'Update successful!'
 
