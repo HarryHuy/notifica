@@ -17,7 +17,18 @@
         {% endfor %}
     {% endif %}
 
-    {{ org_formset.as_p }}
+    {{ org_formset.management_form }}
+
+    {% for org_form in org_formset %}
+        <div class="link-formset">
+            {{ org_form.name.label_tag }} {{ org_form.name }}
+            {% if org_form.name.errors %}
+                {% for error in org_form.name.errors %}
+                    {{ error|escape }}
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endfor %}
     <input type="submit" value="Update Profile" class="btn btn-primary"/>
 </form>
 {% endblock %}
