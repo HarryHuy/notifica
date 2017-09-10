@@ -1,5 +1,16 @@
 {% extends 'base.html' %}
 
+{% block content %}
+{% if message %}
+    <p>{{ mesage }}</p>
+{% endif %}
 <form action="" method="post">
-    {{ form }}
+    {% csrf_token %}
+    <label for="userid">User Id: </label>
+    <input id="userid" type="text" name="userid">
+    <label for="orgid">Org Id: </label>
+    <input id="orgid" type="text" name="orgid">
+    <input type="submit" value="Add">
+    <input type="submit" value="Remove">
 </form>
+{% endblock %}

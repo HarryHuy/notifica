@@ -140,5 +140,5 @@ class BaseManager(object):
 
 
 class UpdateUserOrgForm(forms.Form):
-    username = forms.CharField(label='Username')
-    org = forms.CharField(label='Organization')
+    userid = forms.IntegerField(label='User Id')
+    orgid = forms.IntegerField(label='Org Id')

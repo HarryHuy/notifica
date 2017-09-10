@@ -68,6 +68,7 @@ def update_user_org(request):
     if request.method == 'POST':
         form = UpdateUserOrgForm(request.POST)
         if form.is_valid():
+
             return render(request, 'member/update_organization.html', {
                 'form': form,
                 'message': 'Update successful',

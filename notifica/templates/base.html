@@ -3,7 +3,7 @@
 <head>
     <title>Notifica</title>
     <!--<link rel="stylesheet" href="{% static 'reset.css' %}">-->
-    <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'libraries/bootstrap-3.3.7-dist/css/bootstrap.min.css' %}" rel="stylesheet">
     <!--<link rel="stylesheet" href="{% static 'normalize.css' %}">-->
 </head>
 <body>
@@ -29,10 +29,12 @@
             </div>
         </div>
     </nav>
-    {% block content %}
-    {% endblock %}
-    <script src="{% static 'jquery/jquery-1.9.1.js' %}"></script>
-    <script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <script src="{% static 'libraries/jquery/jquery-1.9.1.js' %}"></script>
+    <script src="{% static 'libraries/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
     <script type="text/javascript">
         // var msg_count = {{ msg.count }}
     </script>
