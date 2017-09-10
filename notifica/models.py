@@ -6,38 +6,29 @@ from channels.binding.websockets import WebsocketBinding
 
 class Position(models.Model):
     name = models.CharField(max_length=30)
-    # permission = models.CharField(max_length=30)
     description = models.CharField(max_length=50, null=True)
 
     def __str__(self):
         return self.name
 
 
+class Organization(models.Model):
+    name = models.CharField(max_length=30)
+    description = models.CharField(max_length=50, blank=True)
+
+
 class ExtendedUser(AbstractUser):
-    code = models.PositiveIntegerField(null=True, blank=True)
-    position = models.ForeignKey(Position, null=True, blank=True)
+    code = models.PositiveIntegerField(blank=True, null=True)
+    position = models.ManyToManyField(Position)
+    org = models.ManyToManyField(Organization)
 
     def __str__(self):
         return self.username
 
 
-class Org(models.Model):
-    name = models.CharField(max_length=30, blank=True)
-    description = models.CharField(max_length=50, blank=True)
-    member = models.ManyToManyField(ExtendedUser, blank=True, related_name='orgs')
-
-    def __str__(self):
-        return self.name
-
-
-class Membership(models.Model):
-    user = models.ForeignKey(ExtendedUser, on_delete=models.CASCADE)
-    org = models.ForeignKey(Org, on_delete=models.CASCADE)
-
-
 class Activity(models.Model):
     name = models.CharField(max_length=30)
-    host = models.ForeignKey(Org, on_delete=models.CASCADE)
+    host = models.ForeignKey(Organization, on_delete=models.CASCADE)
     date = models.DateField()
     participate = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
@@ -60,6 +51,8 @@ class Message(models.Model):
     recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='message_recipient')
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='message_sender')
     state = ('read', 'unread', 'unseen')
+    type = models.CharField(max_length=30, blank=True)
+    url = models.CharField(max_length=50, blank=True)
     content = models.CharField(max_length=100)
 
     def __str__(self):
