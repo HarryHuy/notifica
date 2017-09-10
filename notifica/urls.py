@@ -15,18 +15,16 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-import notifica.views  as views
+from .views import *
 
 urlpatterns = [
-    url(r'^$', views.home),
+    url(r'^$', home),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls')),
-    # url(r'^get_users_online/', views.get_users_online),
-    url(r'^change-member-position/', views.change_member_position, name='change_member_position'),
-    url(r'^list-users/', views.list_users, name='list_user'),
-    url(r'^user/(?P<id>[0-9]+)/$', views.user_detail, name='user_detail'),
-    url(r'^view-cache/', views.view_cache, name='view_cache'),
-    url(r'^online/', views.online_users, name='online'),
-    url(r'update-user/', views.update_user),
-    url(r'failed/', views.failed)
+    url(r'^change-member-position/', change_member_position, name='change_member_position'),
+    url(r'^list-users/', list_users, name='list_user'),
+    url(r'^user/(?P<id>[0-9]+)/$', user_detail, name='user_detail'),
+    url(r'^view-cache/', view_cache, name='view_cache'),
+    url(r'^online/', online_users, name='online'),
+    url(r'update-user-org/$', update_user_org, name='update_user_org'),
 ]

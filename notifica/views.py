@@ -1,10 +1,15 @@
 from django.shortcuts import render
-# from channels import Channel
-from django.http import HttpResponse
-import json
-from .models import Position, ExtendedUser, Notify
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.cache import caches
-from .forms import UpdateUserForm
+from django.contrib.auth.decorators import login_required
+from django.forms import inlineformset_factory, modelformset_factory
+from django.db import transaction, IntegrityError
+import json
+from .models import *
+from .forms import *
+
+
+UserModel = ExtendedUser
 
 
 def home(request):
@@ -80,8 +85,31 @@ def update_user(request):
     return render(request, 'update/update_user.html', {'form': form})
 
 
-def failed(request):
-    print('failed called')
-    # import pdb
-    # pdb.set_trace()
-    return HttpResponse('Test called')
+@login_required
+def update_user_org(request):
+    user = request.user
+    OrgFormSet = formset_factory(OrgForm, formset=BaseOrgFormSet)
+    org_list = [{'name': org.name} for org in user.org.all()]
+
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, user=user)
+        org_formset = OrgFormSet(request.POST)
+
+        if user_form.is_valid() and org_formset.is_valid():
+            user.first_name = user_form.cleaned_data.get('first_name')
+            user.last_name = user_form.cleaned_data.get('last_name')
+            user.save()
+
+            for org_form in org_formset:
+                name = org_form.cleaned_data.get('name')
+                org = Organization.objects.get(name=name)
+                user.org.add(org)
+
+    user_form = UserForm(user=user)
+    org_formset = OrgFormSet(initial=org_list)
+    context = {
+        'user_form': user_form,
+        'org_formset': org_formset,
+    }
+
+    return render(request, 'user/update_org.html', context)
