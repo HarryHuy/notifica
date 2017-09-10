@@ -16,11 +16,14 @@ class Organization(models.Model):
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=50, blank=True)
 
+    def __str__(self):
+        return self.name
+
 
 class ExtendedUser(AbstractUser):
     code = models.PositiveIntegerField(blank=True, null=True)
-    position = models.ManyToManyField(Position)
-    org = models.ManyToManyField(Organization)
+    position = models.ManyToManyField(Position, blank=True)
+    org = models.ManyToManyField(Organization, blank=True)
 
     def __str__(self):
         return self.username
