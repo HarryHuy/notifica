@@ -3,7 +3,7 @@ from django.http import HttpResponse
 import json
 from .models import Position, ExtendedUser, Notify
 from django.core.cache import caches
-from .classes import BaseManager
+from .classes import BaseManager, UpdateUserOrgForm
 
 
 def home(request):
@@ -50,21 +50,29 @@ def user_detail(request, id):
 def view_cache(request):
     cache = caches['default']
     users = cache.get('logged_in.users.all')
-    if users != None:
+    if users is not None:
         dump = json.dumps([item.username for item in all])
     else:
         dump = '["nothing"]'
     return HttpResponse(dump, content_type='application/json')
 
 
-def online_users(request):
+def get_online_users(request):
     logged_users = BaseManager('logged_in', 'users')
     users_online = logged_users.all()
     dump = json.dumps(users_online)
     return HttpResponse(dump, content_type='application/json')
 
 
-def test_template(request):
-    users = ExtendedUser.objects.all()
-    return render(request, 'test/index.html', {'data': users})
+def update_user_org(request):
+    if request.method == 'POST':
+        form = UpdateUserOrgForm(request.POST)
+        if form.is_valid():
+            return render(request, 'member/update_organization.html', {
+                'form': form,
+                'message': 'Update successful',
+            })
+    form = UpdateUserOrgForm()
+    return render(request, 'member/update_organization.html', {'form': form})
+
 

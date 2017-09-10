@@ -15,14 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-import notifica.views  as views
+from .views import *
 
 urlpatterns = [
-    url(r'^$', views.home),
+    url(r'^$', home),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls')),
-    url(r'^change-member-position/', views.change_member_position, name='change_member_position'),
-    url(r'^list-users/', views.list_user, name='list_user'),
-    url(r'^user/(?P<id>[0-9]+)/$', views.user_detail, name='user_detail'),
-    url(r'^test/$', views.test_template, name='test_template'),
+    url(r'^change-member-position/', change_member_position, name='change_member_position'),
+    url(r'^list-users/', list_user, name='list_user'),
+    url(r'^user/(?P<id>[0-9]+)/$', user_detail, name='user_detail'),
+    url(r'^update-user-org/$', update_user_org, name='update_user_org'),
 ]

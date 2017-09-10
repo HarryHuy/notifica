@@ -1,4 +1,5 @@
 import logging
+from django import forms
 from .cache import cache
 
 LOG = logging.getLogger(__name__)
@@ -136,3 +137,8 @@ class BaseManager(object):
         cls._instance.name = name
         cls._instance.scope = scope
         return cls._instance
+
+
+class UpdateUserOrgForm(forms.Form):
+    username = forms.CharField(label='Username')
+    org = forms.CharField(label='Organization')
