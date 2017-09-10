@@ -90,6 +90,7 @@ def update_user_org(request):
     user = request.user
     OrgFormSet = formset_factory(OrgForm, formset=BaseOrgFormSet)
     org_list = [{'name': org.name} for org in user.org.all()]
+    message = None
 
     if request.method == 'POST':
         user_form = UserForm(request.POST, user=user)
@@ -105,11 +106,15 @@ def update_user_org(request):
                 org = Organization.objects.get(name=name)
                 user.org.add(org)
 
-    user_form = UserForm(user=user)
-    org_formset = OrgFormSet(initial=org_list)
+            message = 'Update successful!'
+
+    else:
+        user_form = UserForm(user=user)
+        org_formset = OrgFormSet(initial=org_list)
     context = {
         'user_form': user_form,
         'org_formset': org_formset,
+        'message': message,
     }
 
     return render(request, 'user/update_org.html', context)

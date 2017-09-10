@@ -49,4 +49,7 @@ class BaseOrgFormSet(BaseFormSet):
                 try:
                     Organization.objects.get(name=name)
                 except ObjectDoesNotExist:
-                    raise forms.ValidationError('Organization does not exist!')
+                    raise forms.ValidationError(
+                        'Organization does not exist!',
+                        code='org_does_not_exist'
+                    )
