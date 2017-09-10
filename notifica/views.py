@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.cache import caches
 from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory, modelformset_factory
 from django.db import transaction, IntegrityError
+from django.core.urlresolvers import reverse
 import json
 from .models import *
 from .forms import *
@@ -101,10 +102,21 @@ def update_user_org(request):
             user.last_name = user_form.cleaned_data.get('last_name')
             user.save()
 
+            new_org_list = []
+
             for org_form in org_formset:
-                name = org_form.cleaned_data.get('name')
-                org = Organization.objects.get(name=name)
-                user.org.add(org)
+                name = org_form.cleaned_data['name']
+                if name != '':
+                    org = Organization.objects.get(name=name)
+                    new_org_list.append(org)
+
+            try:
+                with transaction.atomic():
+                    user.org.clear()
+                    user.org.add(*new_org_list)
+            except IntegrityError:
+                message = 'Error during transaction!'
+                return redirect(reverse('update_user_org'))
 
             message = 'Update successful!'
 

@@ -46,10 +46,11 @@ class BaseOrgFormSet(BaseFormSet):
         for form in self.forms:
             if form.cleaned_data:
                 name = form.cleaned_data['name']
-                try:
-                    Organization.objects.get(name=name)
-                except ObjectDoesNotExist:
-                    raise forms.ValidationError(
-                        'Organization does not exist!',
-                        code='org_does_not_exist'
-                    )
+                if name != '':
+                    try:
+                        Organization.objects.get(name=name)
+                    except ObjectDoesNotExist:
+                        raise forms.ValidationError(
+                            'Organization does not exist!',
+                            code='org_does_not_exist'
+                        )
