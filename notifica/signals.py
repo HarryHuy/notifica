@@ -1,5 +1,5 @@
 from django.db.models.signals import post_save, pre_save, m2m_changed
-from .models import Notify, ExtendedUser, Org
+from .models import *
 from django.dispatch import receiver
 from django.contrib.auth import user_logged_in, user_logged_out
 
@@ -27,9 +27,9 @@ def org_changed(**kwargs):
     print(kwargs)
 
 
-@receiver(m2m_changed, sender=Org.member.through)
-def org_m2m_changed(**kwargs):
-    print(kwargs)
+# @receiver(m2m_changed, sender=Organization.member.through)
+# def org_m2m_changed(**kwargs):
+#     print(kwargs)
 
 
 # @receiver(m2m_changed, sender=)
