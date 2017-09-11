@@ -57,13 +57,15 @@ def online_users(request):
 
 
 def update_user_org(request, uid=None):
-    context = {}
+    context = {
+        'user_list': UserModel.objects.all(),
+    }
 
     if uid is not None:
         user = get_object_or_404(UserModel, pk=uid)
         context['user'] = user
         OrgFormSet = formset_factory(OrgForm, formset=BaseOrgFormSet)
-        org_list = [{'name': org.name} for org in user.org.all()]
+        org_list = [{'name': org.pk} for org in user.org.all()]
 
         if request.method == 'POST':
             org_formset = OrgFormSet(request.POST)
@@ -89,7 +91,5 @@ def update_user_org(request, uid=None):
                     context['org_formset'] = OrgFormSet(new_post_request)
         else:
             context['org_formset'] = OrgFormSet(initial=org_list)
-    else:
-        context['user_list'] = UserModel.objects.all()
 
     return render(request, 'user/update_org.html', context)

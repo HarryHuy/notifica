@@ -29,9 +29,9 @@ class UserForm(forms.Form):
 
 
 class OrgForm(forms.Form):
-    name = forms.CharField(
+    name = forms.ModelChoiceField(
         required=False,
-        widget=forms.TextInput(attrs={'placeholder': 'Organization Name'}),
+        queryset=Organization.objects.all(),
     )
 
 
