@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from notifica.models import *
+from .models import *
 
 admin.site.register(Organization)
 admin.site.register(Activity)

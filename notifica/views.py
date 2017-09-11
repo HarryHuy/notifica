@@ -24,7 +24,7 @@ def change_member_position(request):
     try:
         member.save()
     except:
-        return HttpResponse(status=404)
+        raise
     n = Notify()
     creator = ExtendedUser.objects.get(id=request.user.id)
     recipient = ExtendedUser.objects.get(id=request.POST['member_id'])

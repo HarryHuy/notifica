@@ -3,6 +3,7 @@ from .models import NotifyBinding, MessageBinding, ExtendedUser
 from .ultils import logged_users
 from channels import Group
 
+logged_users = BaseManager('logged_in', 'users')
 
 class Demultiplexer(WebsocketDemultiplexer):
     http_user = True
