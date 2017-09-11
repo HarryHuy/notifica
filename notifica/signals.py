@@ -28,4 +28,3 @@ def user_org_changed(sender, **kwargs):
             creator=instance.creator,
             content=kwargs['action'],
         )
-
