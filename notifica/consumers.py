@@ -1,9 +1,7 @@
 from channels.generic.websockets import WebsocketDemultiplexer, JsonWebsocketConsumer
-from .models import NotifyBinding, MessageBinding, ExtendedUser
-from .ultils import logged_users
+from .models import *
 from channels import Group
 
-logged_users = BaseManager('logged_in', 'users')
 
 class Demultiplexer(WebsocketDemultiplexer):
     http_user = True
@@ -31,4 +29,3 @@ class Demultiplexer(WebsocketDemultiplexer):
         for stream, consumer in self.consumers.items():
             kwargs['multiplexer'] = self.multiplexer_class(stream, self.message.reply_channel)
             consumer(message, **kwargs)
-
