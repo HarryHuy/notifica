@@ -7,11 +7,6 @@ from .models import Organization, ExtendedUser
 UserModel = ExtendedUser
 
 
-class UpdateUserForm(forms.Form):
-    username = forms.CharField(label='Username')
-    email = forms.EmailField(label='Email')
-
-
 class UserForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
