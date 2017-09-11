@@ -5,30 +5,46 @@
 {% if message %}
 <p>{{ message }}</p>
 {% endif %}
+<div class="row">
+    <div class="col-md-7">
+        # User list
+        {% if user_list %}
+        <ul>
+            {% for user in user_list %}
+            <li><a href="{% url 'update_user_org_id' user.id %}">{{ user.username }}</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    <div class="col-md-5">
+        # Update form
+        {% if org_formset %}
+        <form action="" method="post">
+            {% csrf_token %}
 
-<form action="" method="post">
-    {% csrf_token %}
+            {{ user_form.as_p }}
 
-    {{ user_form.as_p }}
-
-    {% if org_formset.non_form_errors %}
-        {% for error in org_formset.non_form_errors %}
+            {% if org_formset.non_form_errors %}
+            {% for error in org_formset.non_form_errors %}
             {{ error|escape }}
-        {% endfor %}
-    {% endif %}
-
-    {{ org_formset.management_form }}
-
-    {% for org_form in org_formset %}
-        <div class="link-formset">
-            {{ org_form.name.label_tag }} {{ org_form.name }}
-            {% if org_form.name.errors %}
-                {% for error in org_form.name.errors %}
-                    {{ error|escape }}
-                {% endfor %}
+            {% endfor %}
             {% endif %}
-        </div>
-    {% endfor %}
-    <input type="submit" value="Update Profile" class="btn btn-primary"/>
-</form>
+
+            {{ org_formset.management_form }}
+
+            {% for org_form in org_formset %}
+            <div class="link-formset">
+                {{ org_form.name.label_tag }} {{ org_form.name }}
+                {% if org_form.name.errors %}
+                {% for error in org_form.name.errors %}
+                {{ error|escape }}
+                {% endfor %}
+                {% endif %}
+            </div>
+            {% endfor %}
+            <input type="submit" value="Update Profile" class="btn btn-primary"/>
+        </form>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
