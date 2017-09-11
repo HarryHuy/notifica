@@ -1,5 +1,5 @@
 from django import forms
-from django.forms.formsets import BaseFormSet, formset_factory
+from django.forms.formsets import BaseFormSet
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Organization, ExtendedUser
 
@@ -19,6 +19,7 @@ class UserForm(forms.Form):
             widget=forms.TextInput(attrs={
                 'placeholder': 'First Name',
             }))
+
         self.fields['last_name'] = forms.CharField(
             max_length=30,
             required=False,

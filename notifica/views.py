@@ -1,10 +1,8 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
 from django.core.cache import caches
-from django.contrib.auth.decorators import login_required
-from django.forms import inlineformset_factory, modelformset_factory
+from django.forms.formsets import formset_factory
 from django.db import transaction, IntegrityError
-from django.core.urlresolvers import reverse
 import json
 from .models import *
 from .forms import *
