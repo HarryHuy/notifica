@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from django.core import serializers
+import json
 from channels.binding.websockets import WebsocketBinding
 
 
@@ -26,6 +28,9 @@ class ExtendedUser(AbstractUser):
     org = models.ManyToManyField(Organization, blank=True)
 
     def __str__(self):
+        return self.username
+
+    def natural_key(self):
         return self.username
 
 
@@ -63,7 +68,8 @@ class Message(models.Model):
 class NotifyBinding(WebsocketBinding):
     model = Notify
     stream = 'notify'
-    fields = ['recipient', 'creator', 'state', 'content', 'url']
+    # fields = ['recipient', 'creator', 'content', 'url']
+    fields = ['__all__']
 
     # groups receiving data
     @classmethod
@@ -75,6 +81,25 @@ class NotifyBinding(WebsocketBinding):
 
     def has_permission(self, user, action, pk):
         return True
+
+    def serialize_data(self, instance):
+        """
+        Serializes model data into JSON-compatible types.
+        """
+        if self.fields is not None:
+            if self.fields == '__all__' or list(self.fields) == ['__all__']:
+                fields = None
+            else:
+                fields = self.fields
+        else:
+            fields = [f.name for f in instance._meta.get_fields() if f.name not in self.exclude]
+        data = serializers.serialize(
+            'json',
+            [instance],
+            fields=fields,
+            use_natural_foreign_keys=True,
+        )
+        return json.loads(data)[0]['fields']
 
 
 class MessageBinding(WebsocketBinding):
