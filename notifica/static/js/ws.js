@@ -6,7 +6,26 @@ $('document').ready(function () {
     webSocketBridge.connect(ws_path);
     webSocketBridge.listen();
     webSocketBridge.demultiplex('notify', function(payload, streamName) {
-        console.log(payload, streamName)
+        console.log(payload, streamName);
+
+        if (payload['action'] == 'create') {
+            $('.dropdown-menu').append(
+                $('<li role="presentation">'
+                + '<input class="id-store" type="hidden" value="' + payload['pk'] + '">'
+                +'<a href="#">'
+                + payload['data']['creator'] + ' ' + payload['data']['content']
+                +'<button class="close"><span aria-hidden="true">×</span></button></a></li>'),
+            )
+        }
+
+        if (payload['action'] == 'update') {
+
+        }
+
+        if (payload['action'] == 'delete') {
+            notify = $('.id-store').filter(function() { return this.value == payload['pk'] });
+            notify.parents('li').remove();
+        }
     });
 
     // Helpful debugging
