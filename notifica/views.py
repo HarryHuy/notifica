@@ -43,18 +43,6 @@ def change_member_position(request):
     return HttpResponse(status=200)
 
 
-def list_users(request):
-    users = ExtendedUser.objects.all()
-    dump = json.dumps([obj for obj in users.values('id', 'username', 'position__name')])
-    return HttpResponse(dump, content_type='application/json')
-
-
-def user_detail(request, id):
-    user = ExtendedUser.objects.get(id=id)
-    dump = json.dumps([user.username, user.email, user.position.name])
-    return HttpResponse(dump, content_type='application/json')
-
-
 def view_cache(request):
     cache = caches['default']
     all = cache.get('logged_in.users.all')
@@ -68,59 +56,40 @@ def online_users(request):
     return HttpResponse(dump, content_type='application/json')
 
 
-def update_user(request):
-    if request.method == 'POST':
-        form = UpdateUserForm(request.POST)
-        if form.is_valid():
-            try:
-                user = ExtendedUser.objects.get(username=form.data['username'])
-            except ExtendedUser.DoesNotExist:
-                return HttpResponse('Username does not exist')
-            else:
-                user.email = form.data['email']
-                user.updated_by = request.user.id
-                user.save()
-            return HttpResponse('Update successful')
+def update_user_org(request, uid=None):
+    context = {}
+
+    if uid is not None:
+        user = get_object_or_404(UserModel, pk=uid)
+        context['user'] = user
+        OrgFormSet = formset_factory(OrgForm, formset=BaseOrgFormSet)
+        org_list = [{'name': org.name} for org in user.org.all()]
+
+        if request.method == 'POST':
+            org_formset = OrgFormSet(request.POST)
+
+            if org_formset.is_valid():
+                new_org_list = []
+
+                for org_form in org_formset:
+                    name = org_form.cleaned_data.get('name')
+                    if name != '' and name is not None:
+                        org = Organization.objects.get(name=name)
+                        new_org_list.append(org)
+
+                try:
+                    with transaction.atomic():
+                        user.org.clear()
+                        user.org.add(*new_org_list)
+                except IntegrityError:
+                    context['message'] = 'Error during transaction!'
+                else:
+                    new_post_request = request.POST.copy()
+                    new_post_request['form-TOTAL_FORMS'] = len(new_org_list) + 1
+                    context['org_formset'] = OrgFormSet(new_post_request)
+        else:
+            context['org_formset'] = OrgFormSet(initial=org_list)
     else:
-        form = UpdateUserForm()
-    return render(request, 'update/update_user.html', {'form': form})
-
-
-def update_user_org(request, uid):
-    user = get_object_or_404(UserModel, pk=uid)
-    OrgFormSet = formset_factory(OrgForm, formset=BaseOrgFormSet)
-    org_list = [{'name': org.name} for org in user.org.all()]
-    message = None
-
-    if request.method == 'POST':
-        org_formset = OrgFormSet(request.POST)
-
-        if org_formset.is_valid():
-            new_org_list = []
-
-            for org_form in org_formset:
-                name = org_form.cleaned_data.get('name')
-                if name != '' and name is not None:
-                    org = Organization.objects.get(name=name)
-                    new_org_list.append(org)
-
-            try:
-                with transaction.atomic():
-                    user.org.clear()
-                    user.org.add(*new_org_list)
-            except IntegrityError:
-                message = 'Error during transaction!'
-                return redirect(reverse('update_user_org', uid))
-
-            new_post_request = request.POST.copy()
-            new_post_request['form-TOTAL_FORMS'] = len(new_org_list) + 1
-            org_formset = OrgFormSet(new_post_request)
-    else:
-        user_form = UserForm(user=user)
-        org_formset = OrgFormSet(initial=org_list)
-    context = {
-        'org_formset': org_formset,
-        'message': message,
-    }
+        context['user_list'] = UserModel.objects.all()
 
     return render(request, 'user/update_org.html', context)
