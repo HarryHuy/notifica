@@ -42,7 +42,6 @@ class Activity(models.Model):
 class Notify(models.Model):
     recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='notify_recipient')
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='notify_sender')
-    state = ('read', 'unread')
     content = models.CharField(max_length=30)
     url = models.CharField(max_length=50)
 
@@ -53,7 +52,6 @@ class Notify(models.Model):
 class Message(models.Model):
     recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='message_recipient')
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='message_sender')
-    state = ('read', 'unread', 'unseen')
     type = models.CharField(max_length=30, blank=True)
     url = models.CharField(max_length=50, blank=True)
     content = models.CharField(max_length=100)

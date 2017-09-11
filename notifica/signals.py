@@ -7,13 +7,12 @@ from django.contrib.auth import user_logged_in, user_logged_out
 UserModel = ExtendedUser
 
 
-@receiver(post_save, sender=Notify)
+# @receiver(post_save, sender=Notify)
 def new_notify(sender, **kargs):
     if kargs['created'] is True:
         message = {
             'creator': kargs['instance'].creator.username,
             'recipient': kargs['instance'].recipient.username,
-            'state': kargs['instance'].state,
             'type': kargs['instance'].type,
             'url': kargs['instance'].url
         }
@@ -21,13 +20,12 @@ def new_notify(sender, **kargs):
 
 
 @receiver(m2m_changed, sender=ExtendedUser.org.through)
-def organization_changed(sender, **kwargs):
+def user_org_changed(sender, **kwargs):
     if kwargs['action'] in ('post_add', 'post_remove'):
         instance = kwargs['instance']
         notify = Notify.objects.create(
             recipient=instance,
-            creator=ExtendedUser.objects.get(pk=instance['creator_id']),
-            state='unread',
-            type=kwargs['action'],
+            creator=instance.creator,
+            content=kwargs['action'],
         )
 

@@ -79,6 +79,7 @@ def update_user_org(request, uid=None):
 
                 try:
                     with transaction.atomic():
+                        user.creator = request.user
                         user.org.clear()
                         user.org.add(*new_org_list)
                 except IntegrityError:
