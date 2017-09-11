@@ -93,19 +93,14 @@ def update_user_org(request, uid):
     message = None
 
     if request.method == 'POST':
-        user_form = UserForm(request.POST, user=user)
         org_formset = OrgFormSet(request.POST)
 
-        if user_form.is_valid() and org_formset.is_valid():
-            user.first_name = user_form.cleaned_data.get('first_name')
-            user.last_name = user_form.cleaned_data.get('last_name')
-            user.save()
-
+        if org_formset.is_valid():
             new_org_list = []
 
             for org_form in org_formset:
-                name = org_form.cleaned_data['name']
-                if name != '':
+                name = org_form.cleaned_data.get('name')
+                if name != '' and name is not None:
                     org = Organization.objects.get(name=name)
                     new_org_list.append(org)
 
@@ -117,13 +112,13 @@ def update_user_org(request, uid):
                 message = 'Error during transaction!'
                 return redirect(reverse('update_user_org', uid))
 
-            message = 'Update successful!'
-
+            new_post_request = request.POST.copy()
+            new_post_request['form-TOTAL_FORMS'] = len(new_org_list) + 1
+            org_formset = OrgFormSet(new_post_request)
     else:
         user_form = UserForm(user=user)
         org_formset = OrgFormSet(initial=org_list)
     context = {
-        'user_form': user_form,
         'org_formset': org_formset,
         'message': message,
     }
