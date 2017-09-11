@@ -1,4 +1,4 @@
 $('.link-formset').formset({
-    addText: 'add link',
+    addText: 'add organization',
     deleteText: 'remove'
 });
