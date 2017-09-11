@@ -87,6 +87,7 @@ def update_user_org(request, uid=None):
                     new_post_request = request.POST.copy()
                     new_post_request['form-TOTAL_FORMS'] = len(new_org_list) + 1
                     context['org_formset'] = OrgFormSet(new_post_request)
+                    context['message'] = 'Update successful!'
         else:
             context['org_formset'] = OrgFormSet(initial=org_list)
 
