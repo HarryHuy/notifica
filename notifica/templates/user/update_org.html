@@ -17,7 +17,7 @@
         {% endif %}
     </div>
     <div class="col-md-5">
-        # Update form
+        # Update class
         {% if org_formset %}
         <form action="" method="post">
             {% csrf_token %}
@@ -33,7 +33,7 @@
             {{ org_formset.management_form }}
 
             {% for org_form in org_formset %}
-            <div class="link-formset">
+            <div class="form-group">
                 {{ org_form.name.label_tag }} {{ org_form.name }}
                 {% if org_form.name.errors %}
                 {% for error in org_form.name.errors %}
@@ -42,7 +42,9 @@
                 {% endif %}
             </div>
             {% endfor %}
-            <input type="submit" value="Update Profile" class="btn btn-primary"/>
+            <div class="row">
+                <input type="submit" value="Update Profile" class="btn btn-primary"/>
+            </div>
         </form>
         {% endif %}
     </div>
