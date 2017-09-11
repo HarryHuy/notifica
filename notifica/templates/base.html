@@ -14,15 +14,19 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active" role="presentation"><a href="#">Home</a></li>
-                    <li role="presentation"><a href="#">Organizations</a></li>
-                    <li role="presentation"><a href="#">Activities</a></li>
-                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" href="#"><span class="badge badge-pill badge-success">1</span> Notification <span class="caret"></span></a>
+                    <li role="presentation"><a href="#">Update classes</a></li>
+                    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" href="#"><span class="badge badge-pill badge-success">{{ notify_list.count }}</span> Notification <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li role="presentation"><a href="#">First Item<button class="close"><span aria-hidden="true">×</span></button></a></li>
-                            <li role="presentation"><a href="#">Second Item<button class="close"><span aria-hidden="true">×</span></button></a></li>
-                            <li role="presentation"><a href="#">Third Item<button class="close"><span aria-hidden="true">×</span></button></a></li>
+                            {% if notify_list %}
+                                {% for notify in notify_list %}
+                                <li role="presentation"><a href="#">{{ notify.creator }} {{ notify.content }}<button class="close"><span aria-hidden="true">×</span></button></a></li>
+                                {% endfor %}
+                            {% else %}
+                                <li role="presentation">No notification!</li>
+                            {% endif %}
                         </ul>
                     </li>
+                    <li role="presentation"><a href="#">Help</a></li>
                     <li role="presentation"><a href="#">Login</a></li>
                 </ul>
             </div>
