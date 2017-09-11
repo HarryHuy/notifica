@@ -4,6 +4,9 @@ from django.dispatch import receiver
 from django.contrib.auth import user_logged_in, user_logged_out
 
 
+UserModel = ExtendedUser
+
+
 # @receiver(post_save, sender=ExtendedUser)
 def user_changed(*args, **kwargs):
     if not kwargs['created']:
@@ -22,16 +25,6 @@ def user_changed(*args, **kwargs):
             notify.save()
 
 
-# @receiver(post_save, sender=Org)
-def org_changed(**kwargs):
-    print(kwargs)
-
-
-# @receiver(m2m_changed, sender=Organization.member.through)
-# def org_m2m_changed(**kwargs):
-#     print(kwargs)
-
-
-# @receiver(m2m_changed, sender=)
-def user_m2m_changed(**kwargs):
-    print(kwargs)
+@receiver(m2m_changed, sender=UserModel.org.through)
+def signal_org_change(**kwargs):
+    pass
