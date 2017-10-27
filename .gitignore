@@ -2,5 +2,5 @@
 __pycache__
 *.swp
 *.sqlite3
-.env
-env/
+venv/
+*.pyc
