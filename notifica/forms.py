@@ -4,10 +4,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import Organization, ExtendedUser
 
 
+# TODO: should use django get_user_model instead
 UserModel = ExtendedUser
 
 
 class UserForm(forms.Form):
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
@@ -30,6 +32,7 @@ class UserForm(forms.Form):
 
 
 class OrgForm(forms.Form):
+
     name = forms.ModelChoiceField(
         required=False,
         queryset=Organization.objects.all(),
@@ -37,6 +40,7 @@ class OrgForm(forms.Form):
 
 
 class BaseOrgFormSet(BaseFormSet):
+
     def clean(self):
         if any(self.errors):
             return

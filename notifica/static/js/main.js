@@ -5,12 +5,11 @@ $('document').ready(function() {
         event.preventDefault();
     });
 
-    $('.form-group').formset({
-    // add add form and remove form links
-    });
+    // $('.form-group').formset({
+    // create add form and remove form links
+    // });
 
     $('.close').click(function() {
-        console.log('close button clicked');
         $(this).closest('li').remove();
     });
 })

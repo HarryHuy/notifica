@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^$', home),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls')),
+    # TODO: Rename feature's name to update group
     url(r'^update-user-org/$', update_user_org, name='update_user_org'),
     url(r'^update-user-org/(?P<uid>[0-9]+)/$', update_user_org, name='update_user_org_id'),
 ]

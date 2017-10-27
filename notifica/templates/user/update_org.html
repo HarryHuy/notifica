@@ -7,7 +7,7 @@
 {% endif %}
 <div class="row">
     <div class="col-md-7">
-        # User list
+        # User
         {% if user_list %}
         <ul>
             {% for user in user_list %}
@@ -17,7 +17,17 @@
         {% endif %}
     </div>
     <div class="col-md-5">
-        # Update class
+        # User's group
+        {% if editing_user %}
+        <p>{{ editing_user.username }}</p>
+        {% endif %}
+
+        {% if org_list %}
+        {% for org in org_list %}
+            <p>{{ org }}</p>
+        {% endfor %}
+        {% endif %}
+
         {% if org_formset %}
         <form action="" method="post">
             {% csrf_token %}

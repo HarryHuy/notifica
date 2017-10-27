@@ -19,10 +19,11 @@ def new_notify(sender, **kargs):
         Channel('notify').send({'text': message})
 
 
-@receiver(m2m_changed, sender=ExtendedUser.org.through)
+# @receiver(m2m_changed, sender=ExtendedUser.org.through)
 def user_org_changed(sender, **kwargs):
     if kwargs['action'] in ('post_add', 'post_remove'):
         instance = kwargs['instance']
+        # instance.creator hasn't been covered
         notify = Notify.objects.create(
             recipient=instance,
             creator=instance.creator,
