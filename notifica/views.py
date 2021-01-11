@@ -7,7 +7,7 @@ from .classes import BaseManager, UpdateUserOrgForm
 
 
 def home(request):
-    return render(request, 'home/home.html')
+    return render(request, 'home/index.html')
 
 
 def change_member_position(request):
