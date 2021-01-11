@@ -1,0 +1,4 @@
+ALLOWED_HOSTS = "[*]"
+DEBUG = "True"
+DB_NAME = "notifica"
+DB_USER = "notifica"

@@ -1,6 +1,10 @@
-.idea/
 __pycache__
 *.swp
 *.sqlite3
 .env
 env/
+# Ignore dynaconf secret files
+.secrets.*
+# IDE
+.idea/
+.vscode/

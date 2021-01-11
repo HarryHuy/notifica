@@ -12,20 +12,25 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+from dynaconf import Dynaconf
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+dynset = Dynaconf(
+    settings_files=["settings.toml", ".secrets.toml"],
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '0k#6wkhm*ui!nr^42z$oo+esbso_273a&&r+z*4c_pku2ha!$_'
+SECRET_KEY = dynset.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = dynset.DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = dynset.ALLOWED_HOSTS
 
 
 # Application definition
@@ -77,13 +82,10 @@ WSGI_APPLICATION = 'notifica.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        # 'ENGINE': 'django.db.backends.mysql',
-        # 'NAME': 'test',
-        # 'USER': 'test',
-        # 'PASSWORD': '12345678',
-        # 'HOST': '192.168.56.101',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': dynset.DB_NAME,
+        'USER': dynset.DB_USER,
+        'PASSWORD': dynset.DB_USER_PASS,
     }
 }
 
