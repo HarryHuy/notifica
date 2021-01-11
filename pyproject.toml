@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "notifica"
+version = "0.1.0"
+description = "Experiment websocket communication protocol"
+authors = ["harry <harryhuydoan@gmail.com>"]
+license = "GPL"
+
+[tool.poetry.dependencies]
+python = "~3.6"
+django = "~1.11"
+django-channels = "^0.7.0"
+dynaconf = "3.1.2"
+mysqlclient = "^2.0.3"
+
+[tool.poetry.dev-dependencies]
+pylint = "^2.6.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
