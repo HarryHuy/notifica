@@ -14,6 +14,7 @@ import os
 
 from dynaconf import Dynaconf
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -43,7 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'channels',
-    'notifica'
+    'rest_framework',
+    'project',
+    'notifica',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -56,12 +60,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'notifica.urls'
+ROOT_URLCONF = 'project.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['notifica/templates'],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,7 +78,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'notifica.wsgi.application'
+WSGI_APPLICATION = 'project.wsgi.application'
 
 
 # Database
@@ -127,17 +131,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
-    '/media/harry/data/python/notifica/notifica/static'
+    os.path.join(BASE_DIR, 'static')
 ]
 
+# Channel
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "asgiref.inmemory.ChannelLayer",
-        "ROUTING": "notifica.routing.channel_routing",
+        "ROUTING": "project.routing.channel_routing",
     },
 }
 
+# Miscellaneous
 LOGIN_REDIRECT_URL = '/'
 
-AUTH_USER_MODEL = 'notifica.ExtendedUser'
+AUTH_USER_MODEL = 'project.ExtendedUser'

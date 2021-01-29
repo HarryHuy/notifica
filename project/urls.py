@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.urls import path
+
 from .views import *
+from api import urls as api_urls
 
 urlpatterns = [
     url(r'^$', home),
@@ -25,4 +28,5 @@ urlpatterns = [
     url(r'^list-users/', list_user, name='list_user'),
     url(r'^user/(?P<id>[0-9]+)/$', user_detail, name='user_detail'),
     url(r'^update-user-org/$', update_user_org, name='update_user_org'),
+    path('api/', include(api_urls)),
 ]

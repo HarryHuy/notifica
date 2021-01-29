@@ -2,9 +2,9 @@ from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy as _
 
 
-class NotificaConfig(AppConfig):
-    name = 'notifica'
-    verbose_name = _('notifica')
+class ProjectConfig(AppConfig):
+    name = 'project'
+    verbose_name = _('Project')
 
     def ready(self):
         import notifica.signals
