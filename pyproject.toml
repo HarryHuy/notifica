@@ -6,11 +6,12 @@ authors = ["harry <harryhuydoan@gmail.com>"]
 license = "GPL"
 
 [tool.poetry.dependencies]
-python = "~3.6"
-django = "~1.11"
+python = "^3.6"
+django = "2.2"
 django-channels = "^0.7.0"
 dynaconf = "3.1.2"
 mysqlclient = "^2.0.3"
+djangorestframework = "^3.12.2"
 
 [tool.poetry.dev-dependencies]
 pylint = "^2.6.0"
